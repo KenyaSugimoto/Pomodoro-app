@@ -1,6 +1,6 @@
 ## チケットへのリンク
 
-* https://example.com
+* Closes #(番号)
 
 ## やったこと
 

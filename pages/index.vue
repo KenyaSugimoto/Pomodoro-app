@@ -6,7 +6,7 @@
     <v-col>
       <v-text-field label="id"></v-text-field>
       <v-text-field label="password"></v-text-field>
-      <v-btn @click="goMainPage">スタート</v-btn>
+      <v-btn @click="goMainPage">ログイン</v-btn>
     </v-col>
   </v-row>
 </template>

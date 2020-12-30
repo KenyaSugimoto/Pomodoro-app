@@ -1,5 +1,4 @@
-// export const initTime = 25 * 60
-export const initTime = 10
+export const initTime = 25 * 60
 
 /**
  * Example

@@ -1,26 +1,27 @@
 <template>
   <v-row>
     <v-col cols="12">
-      <h1>{{ status }}</h1>
+      <h1>{{ displayStatus }}</h1>
     </v-col>
     <v-col cols="12">
       <h1>{{ remainingTime }}</h1>
     </v-col>
     <v-col>
       <v-btn @click="timerButtonMethod"> {{ timerButtonLabel }} </v-btn>
-      <v-btn @click="resetRemainingTime">リセット</v-btn>
+      <v-btn @click="resetPomodoroWork">リセット</v-btn>
     </v-col>
   </v-row>
 </template>
 
 <script>
-import { initTime, zeroPadding } from '@/utils/utils'
+import { initWorkTime, initBreakTime, zeroPadding } from '@/utils/utils'
 export default {
   data() {
     return {
-      remainingSecond: initTime,
-      status: '休憩中',
-      isWorking: false,
+      remainingSecond: initWorkTime,
+      displayStatus: 'ポモドーロ',
+      isWorkingTimer: false,
+      timerType: 'work',
       timerButtonLabel: 'スタート',
       timer: null,
     }
@@ -34,37 +35,56 @@ export default {
   },
   methods: {
     timerButtonMethod() {
-      // statusの切り替え
-      this.switchStatus()
-
-      // タイマー処理
-      if (this.isWorking) {
+      if (this.isWorkingTimer) {
+        // タイマーを一時停止する処理
+        this.changeStatus('pause')
+        clearInterval(this.timer)
+      } else {
         // タイマーを開始する処理
+        if (this.timerType === 'work') this.changeStatus('work')
+        else this.changeStatus('break')
+
         this.timer = setInterval(() => {
           if (this.remainingSecond > 0) this.remainingSecond -= 1
+          else {
+            this.switchTimerType()
+          }
         }, 1000)
-      } else {
-        // タイマーを一時停止する処理
-        clearInterval(this.timer)
       }
     },
-    switchStatus() {
-      if (this.isWorking) {
-        this.status = '休憩中'
-        this.timerButtonLabel = 'スタート'
-        this.isWorking = false
-      } else {
-        this.status = '作業中'
+    changeStatus(targetStatus) {
+      if (targetStatus === 'pause') {
+        this.displayStatus =
+          this.timerType === 'work' ? '作業 一時停止中' : '休憩 一時停止中'
+        this.timerButtonLabel = '再開'
+        this.isWorkingTimer = false
+      } else if (targetStatus === 'work') {
+        this.displayStatus = '作業中'
         this.timerButtonLabel = '一時停止'
-        this.isWorking = true
+        this.isWorkingTimer = true
+      } else if (targetStatus === 'break') {
+        this.displayStatus = '休憩中'
+        this.timerButtonLabel = '一時停止'
+        this.isWorkingTimer = true
       }
     },
-    resetRemainingTime() {
+    switchTimerType() {
+      if (this.timerType === 'work') {
+        this.timerType = 'break'
+        this.changeStatus('break')
+        this.remainingSecond = initBreakTime
+      } else {
+        this.timerType = 'work'
+        this.changeStatus('work')
+        this.remainingSecond = initWorkTime
+      }
+    },
+    resetPomodoroWork() {
       clearInterval(this.timer)
-      this.status = '休憩中'
+      this.displayStatus = 'ポモドーロ'
       this.timerButtonLabel = 'スタート'
-      this.isWorking = false
-      this.remainingSecond = initTime
+      this.isWorkingTimer = false
+      this.remainingSecond = initWorkTime
     },
   },
 }

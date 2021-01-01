@@ -13,6 +13,7 @@
 <script>
 import firebase from 'firebase/app'
 import { auth } from '@/utils/firebase'
+import axios from '@/utils/axios'
 export default {
   methods: {
     goMainPage() {
@@ -24,14 +25,38 @@ export default {
         .signInWithPopup(provider)
         .then(function (result) {
           // This gives you a Google Access Token. You can use it to access the Google API.
-          const token = result.credential.accessToken
+          const accessToken = result.credential.accessToken
+          const idToken = result.credential.idToken
           // The signed-in user info.
           const uid = result.user.uid
-          console.log('token: ', token)
-          console.log('uid: ', uid)
+
+          const sendData = {
+            accessToken,
+            uid,
+            idToken,
+          }
+
+          axios
+            .post('/user_info', sendData)
+            .then((res) => {
+              console.log(res)
+            })
+            .catch((err) => {
+              console.log(err)
+            })
         })
         .catch(function (error) {
           console.log(error)
+        })
+    },
+    sendUserInfo() {
+      axios
+        .get('/')
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => {
+          console.log(err)
         })
     },
   },

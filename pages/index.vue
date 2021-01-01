@@ -31,7 +31,6 @@ export default {
           const familyName = additionalUserInfo.profile.family_name
           const givenName = additionalUserInfo.profile.given_name
           auth.currentUser.getIdToken(true).then((idToken) => {
-            console.log(idToken)
             const sendData = {
               idToken,
               photoURL,

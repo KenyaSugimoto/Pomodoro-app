@@ -50,7 +50,7 @@ export default {
                 const totalWorkTime = data.totalWorkTime
                 console.log(uid, userName, totalWorkTime)
                 // メインページへ遷移
-                this.$router.push('/main')
+                // this.$router.push('/main')
               })
               .catch((err) => {
                 console.log(err)

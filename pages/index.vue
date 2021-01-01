@@ -24,20 +24,16 @@ export default {
       auth
         .signInWithPopup(provider)
         .then(function (result) {
-          // This gives you a Google Access Token. You can use it to access the Google API.
-          const accessToken = result.credential.accessToken
           const idToken = result.credential.idToken
           // The signed-in user info.
-          const uid = result.user.uid
+          // const uid = result.user.uid
 
           const sendData = {
-            accessToken,
-            uid,
             idToken,
           }
 
           axios
-            .post('/user_info', sendData)
+            .post('/id_token', sendData)
             .then((res) => {
               console.log(res)
             })
@@ -47,16 +43,6 @@ export default {
         })
         .catch(function (error) {
           console.log(error)
-        })
-    },
-    sendUserInfo() {
-      axios
-        .get('/')
-        .then((res) => {
-          console.log(res)
-        })
-        .catch((err) => {
-          console.log(err)
         })
     },
   },

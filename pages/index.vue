@@ -24,22 +24,20 @@ export default {
       auth
         .signInWithPopup(provider)
         .then(function (result) {
-          const idToken = result.credential.idToken
-          // The signed-in user info.
-          // const uid = result.user.uid
-
-          const sendData = {
-            idToken,
-          }
-
-          axios
-            .post('/id_token', sendData)
-            .then((res) => {
-              console.log(res)
-            })
-            .catch((err) => {
-              console.log(err)
-            })
+          auth.currentUser.getIdToken(true).then((idToken) => {
+            console.log(idToken)
+            const sendData = {
+              idToken,
+            }
+            axios
+              .post('/id_token', sendData)
+              .then((res) => {
+                console.log(res)
+              })
+              .catch((err) => {
+                console.log(err)
+              })
+          })
         })
         .catch(function (error) {
           console.log(error)

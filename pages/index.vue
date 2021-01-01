@@ -24,10 +24,20 @@ export default {
       auth
         .signInWithPopup(provider)
         .then(function (result) {
+          console.log(result)
+          const additionalUserInfo = result.additionalUserInfo
+          const isNewUser = additionalUserInfo.isNewUser
+          const photoURL = additionalUserInfo.profile.picture
+          const familyName = additionalUserInfo.profile.family_name
+          const givenName = additionalUserInfo.profile.given_name
           auth.currentUser.getIdToken(true).then((idToken) => {
             console.log(idToken)
             const sendData = {
               idToken,
+              photoURL,
+              familyName,
+              givenName,
+              isNewUser,
             }
             axios
               .post('/id_token', sendData)

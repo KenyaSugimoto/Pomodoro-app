@@ -39,18 +39,24 @@ export default {
               givenName,
               isNewUser,
             }
-            // ユーザ認証をサーバにリクエスト
+            // ユーザ検証をサーバにリクエスト
             axios
               .post('/id_token', sendData)
               .then((res) => {
-                // 認証後、ユーザ情報を受け取る
+                // 検証後、ユーザ情報を受け取る
                 const data = res.data
-                const uid = data.uid
-                const userName = data.userName
-                const totalWorkTime = data.totalWorkTime
-                console.log(uid, userName, totalWorkTime)
-                // メインページへ遷移
-                // this.$router.push('/main')
+                const verified = data.verified
+                if (verified) {
+                  const uid = data.uid
+                  const userName = data.userName
+                  const totalWorkTime = data.totalWorkTime
+                  console.log(uid, userName, totalWorkTime)
+
+                  // メインページへ遷移
+                  // this.$router.push('/main')
+                } else {
+                  console.log('検証できませんでした')
+                }
               })
               .catch((err) => {
                 console.log(err)

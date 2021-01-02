@@ -27,9 +27,11 @@ export default {
       this.$router.push('/main')
     },
 
-    updateUserInfo(userName) {
-      console.log('updateUserInfo')
+    updateUserInfo(uid, userName, totalWorkTime) {
+      // Vuexに更新
+      this.$store.commit('user/updateUid', uid)
       this.$store.commit('user/updateUserName', userName)
+      this.$store.commit('user/updateTotalWorkTime', totalWorkTime)
     },
 
     authGoogle() {
@@ -68,10 +70,7 @@ export default {
                 const userName = data.userName
                 const totalWorkTime = data.totalWorkTime
 
-                // Vuexに更新
-                this.$store.commit('user/updateUid', uid)
-                this.$store.commit('user/updateUserName', userName)
-                this.$store.commit('user/updateTotalWorkTime', totalWorkTime)
+                this.updateUserInfo(uid, userName, totalWorkTime)
 
                 // メインページへ遷移
                 this.$router.push('/main')

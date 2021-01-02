@@ -11,12 +11,14 @@
     <v-col>
       <v-btn @click="timerButtonMethod"> {{ timerButtonLabel }} </v-btn>
       <v-btn @click="resetPomodoroWork">リセット</v-btn>
+      <v-btn @click="goLoginPage">ログインページへ戻る</v-btn>
     </v-col>
   </v-row>
 </template>
 
 <script>
 import { initWorkTime, initBreakTime, zeroPadding } from '@/utils/utils'
+import axios from '@/utils/axios'
 export default {
   data() {
     return {
@@ -28,6 +30,7 @@ export default {
       timer: null,
     }
   },
+
   computed: {
     remainingTime() {
       const min = zeroPadding(Math.floor(this.remainingSecond / 60), 2)
@@ -35,6 +38,15 @@ export default {
       return `${min} : ${second}`
     },
   },
+
+  created() {
+    console.log('created')
+    const uid = this.$route.params.uid
+
+    // サーバからユーザ情報を取得
+    this.fetchUserInfo(uid)
+  },
+
   methods: {
     timerButtonMethod() {
       if (this.isWorkingTimer) {
@@ -87,6 +99,37 @@ export default {
       this.timerButtonLabel = 'スタート'
       this.isWorkingTimer = false
       this.remainingSecond = initWorkTime
+    },
+    fetchUserInfo(uid) {
+      axios
+        .post('/user_info', { uid })
+        .then((res) => {
+          console.log('user_info', res)
+          const data = res.data
+          // 登録されていないuidでアクセスされた場合、強制的にログインページに戻る
+          if (data.error) {
+            // ポップアップ的なやつ出す？
+
+            this.$router.push('/')
+          }
+          const uid = data.uid
+          const userName = data.userName
+          const totalWorkTime = data.totalWorkTime
+
+          this.updateUserInfo(uid, userName, totalWorkTime)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    goLoginPage() {
+      this.$router.push('/')
+    },
+    updateUserInfo(uid, userName, totalWorkTime) {
+      // Vuexに更新
+      this.$store.commit('user/updateUid', uid)
+      this.$store.commit('user/updateUserName', userName)
+      this.$store.commit('user/updateTotalWorkTime', totalWorkTime)
     },
   },
 }

@@ -27,9 +27,11 @@ export default {
       this.$router.push('/main')
     },
 
-    updateUserInfo(userName) {
-      console.log('updateUserInfo')
+    updateUserInfo(uid, userName, totalWorkTime) {
+      // Vuexに更新
+      this.$store.commit('user/updateUid', uid)
       this.$store.commit('user/updateUserName', userName)
+      this.$store.commit('user/updateTotalWorkTime', totalWorkTime)
     },
 
     authGoogle() {
@@ -56,32 +58,21 @@ export default {
             isNewUser,
           }
 
-          // サーバに検証をリクエスト
-          axios
-            .post('/id_token', sendData)
-            .then((res) => {
-              // 検証後、ユーザ情報を受け取る
-              const data = res.data
-              const verified = data.verified
-              if (verified) {
-                const uid = data.uid
-                const userName = data.userName
-                const totalWorkTime = data.totalWorkTime
+          // サーバへ検証をリクエスト
+          const verifyUserPromise = axios.post('/verify', sendData)
+          const verifiedResponse = await verifyUserPromise
 
-                // Vuexに更新
-                this.$store.commit('user/updateUid', uid)
-                this.$store.commit('user/updateUserName', userName)
-                this.$store.commit('user/updateTotalWorkTime', totalWorkTime)
+          // 検証が成功したかどうかを示すフラグ
+          const verified = verifiedResponse.data.verified
 
-                // メインページへ遷移
-                this.$router.push('/main')
-              } else {
-                console.log('検証できませんでした')
-              }
-            })
-            .catch((err) => {
-              console.log(err)
-            })
+          if (verified) {
+            const uid = verifiedResponse.data.uid
+
+            // メインページへ遷移
+            this.$router.push({ name: 'main-uid', params: { uid } })
+          } else {
+            console.log('検証失敗')
+          }
         })
         .catch(function (error) {
           console.log(error)

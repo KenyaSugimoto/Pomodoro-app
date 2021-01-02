@@ -10,8 +10,9 @@
         height="50px"
         width="50px"
       ></v-img>
-      <p>ようこそ {{ $store.getters['user/userName'] }}</p>
-      <p>累積作業時間 : {{ $store.getters['user/totalWorkTime'] }}秒</p>
+      <p>ようこそ {{ $store.getters['user/userName'] }} さん</p>
+      <p>現在の作業時間 : {{ workTime }} 秒</p>
+      <p>累積作業時間 : {{ totalWorkTime }} 秒</p>
     </v-col>
     <v-col cols="12">
       <h1>{{ remainingTime }}</h1>
@@ -36,6 +37,7 @@ export default {
       timerType: 'work',
       timerButtonLabel: 'スタート',
       timer: null,
+      countTime: 0,
     }
   },
 
@@ -44,6 +46,12 @@ export default {
       const min = zeroPadding(Math.floor(this.remainingSecond / 60), 2)
       const second = zeroPadding(this.remainingSecond % 60, 2)
       return `${min} : ${second}`
+    },
+    workTime() {
+      return this.countTime
+    },
+    totalWorkTime() {
+      return this.$store.getters['user/totalWorkTime'] + this.workTime
     },
   },
 
@@ -66,8 +74,11 @@ export default {
         else this.changeStatus('break')
 
         this.timer = setInterval(() => {
-          if (this.remainingSecond > 0) this.remainingSecond -= 1
-          else {
+          if (this.remainingSecond > 0) {
+            this.remainingSecond -= 1
+            // もし作業中ならカウント
+            if (this.timerType === 'work') this.countTime += 1
+          } else {
             this.switchTimerType()
           }
         }, 1000)
@@ -107,6 +118,9 @@ export default {
       this.isWorkingTimer = false
       this.remainingSecond = initWorkTime
     },
+    goLoginPage() {
+      this.$router.push('/')
+    },
     fetchUserInfo(uid) {
       axios
         .post('/user_info', { uid })
@@ -129,9 +143,6 @@ export default {
         .catch((err) => {
           console.log(err)
         })
-    },
-    goLoginPage() {
-      this.$router.push('/')
     },
     updateUserInfo(uid, userName, totalWorkTime, photoURL) {
       // Vuexに更新

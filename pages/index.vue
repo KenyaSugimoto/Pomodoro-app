@@ -58,19 +58,21 @@ export default {
             isNewUser,
           }
 
+          // サーバへ検証をリクエスト
           const verifyUserPromise = axios.post('/id_token', sendData)
           const verifiedResponse = await verifyUserPromise
 
+          // 検証が成功したかどうかを示すフラグ
           const verified = verifiedResponse.data.verified
 
           if (verified) {
             const uid = verifiedResponse.data.uid
 
-            // // メインページへ遷移
+            // メインページへ遷移
             this.$router.push({ name: 'main-uid', params: { uid } })
+          } else {
+            console.log('検証失敗')
           }
-
-          console.log('verifiedResponse', verifiedResponse)
 
           // // サーバに検証をリクエスト
           // axios

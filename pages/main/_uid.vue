@@ -40,7 +40,6 @@ export default {
   },
 
   created() {
-    console.log('created')
     const uid = this.$route.params.uid
 
     // サーバからユーザ情報を取得

@@ -59,7 +59,7 @@ export default {
           }
 
           // サーバへ検証をリクエスト
-          const verifyUserPromise = axios.post('/id_token', sendData)
+          const verifyUserPromise = axios.post('/verify', sendData)
           const verifiedResponse = await verifyUserPromise
 
           // 検証が成功したかどうかを示すフラグ

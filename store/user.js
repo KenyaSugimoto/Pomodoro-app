@@ -5,20 +5,6 @@ export const state = () => ({
   photoURL: null,
 })
 
-// export const getters = {
-//   uid(state) {
-//     return state.uid
-//   },
-//   userName(state) {
-//     return state.userName
-//   },
-//   totalWorkTime(state) {
-//     return state.totalWorkTime
-//   },
-//   photoURL(state) {
-//     return state.photoURL
-//   },
-// }
 export const getters = {
   uid: (state) => state.uid,
   userName: (state) => state.userName,
@@ -35,5 +21,8 @@ export const mutations = {
   },
   updateTotalWorkTime(state, totalWorkTime) {
     state.totalWorkTime = totalWorkTime
+  },
+  updatePhotoURL(state, photoURL) {
+    state.photoURL = photoURL
   },
 }

@@ -2,6 +2,14 @@
   <v-row>
     <v-col cols="12">
       <h1>{{ displayStatus }}</h1>
+    </v-col>
+    <v-col>
+      <v-img
+        :src="$store.getters['user/photoURL']"
+        class="photo"
+        height="50px"
+        width="50px"
+      ></v-img>
       <p>ようこそ {{ $store.getters['user/userName'] }}</p>
       <p>累積作業時間 : {{ $store.getters['user/totalWorkTime'] }}秒</p>
     </v-col>
@@ -114,8 +122,9 @@ export default {
           const uid = data.uid
           const userName = data.userName
           const totalWorkTime = data.totalWorkTime
+          const photoURL = data.photoURL
 
-          this.updateUserInfo(uid, userName, totalWorkTime)
+          this.updateUserInfo(uid, userName, totalWorkTime, photoURL)
         })
         .catch((err) => {
           console.log(err)
@@ -124,11 +133,12 @@ export default {
     goLoginPage() {
       this.$router.push('/')
     },
-    updateUserInfo(uid, userName, totalWorkTime) {
+    updateUserInfo(uid, userName, totalWorkTime, photoURL) {
       // Vuexに更新
       this.$store.commit('user/updateUid', uid)
       this.$store.commit('user/updateUserName', userName)
       this.$store.commit('user/updateTotalWorkTime', totalWorkTime)
+      this.$store.commit('user/updatePhotoURL', photoURL)
     },
   },
 }

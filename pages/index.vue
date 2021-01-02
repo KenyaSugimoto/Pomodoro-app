@@ -73,30 +73,6 @@ export default {
           } else {
             console.log('検証失敗')
           }
-
-          // // サーバに検証をリクエスト
-          // axios
-          //   .post('/id_token', sendData)
-          //   .then((res) => {
-          //     // 検証後、ユーザ情報を受け取る
-          //     const data = res.data
-          //     const verified = data.verified
-          //     if (verified) {
-          //       const uid = data.uid
-          //       const userName = data.userName
-          //       const totalWorkTime = data.totalWorkTime
-
-          //       this.updateUserInfo(uid, userName, totalWorkTime)
-
-          //       // メインページへ遷移
-          //       this.$router.push('/main')
-          //     } else {
-          //       console.log('検証できませんでした')
-          //     }
-          //   })
-          //   .catch((err) => {
-          //     console.log(err)
-          //   })
         })
         .catch(function (error) {
           console.log(error)

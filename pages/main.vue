@@ -2,6 +2,8 @@
   <v-row>
     <v-col cols="12">
       <h1>{{ displayStatus }}</h1>
+      <p>ようこそ {{ $store.getters['user/userName'] }}</p>
+      <p>累積作業時間 : {{ $store.getters['user/totalWorkTime'] }}秒</p>
     </v-col>
     <v-col cols="12">
       <h1>{{ remainingTime }}</h1>

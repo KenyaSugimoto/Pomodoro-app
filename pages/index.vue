@@ -14,6 +14,7 @@
 import firebase from 'firebase/app'
 import { auth } from '@/utils/firebase'
 import axios from '@/utils/axios'
+import { gestUid } from '@/utils/utils'
 
 export default {
   data() {
@@ -23,8 +24,7 @@ export default {
   },
   methods: {
     goMainPage() {
-      console.log(this.$store)
-      this.$router.push('/main')
+      this.$router.push({ name: 'main-uid', params: { uid: gestUid } })
     },
 
     updateUserInfo(uid, userName, totalWorkTime) {

@@ -87,7 +87,7 @@ export default {
 
   methods: {
     confirmSave(event) {
-      event.returnValue = 'よろしいですか？'
+      event.returnValue = ''
     },
     timerButtonMethod() {
       if (this.isWorkingTimer) {

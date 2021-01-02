@@ -11,8 +11,8 @@
         width="50px"
       ></v-img>
       <p>ようこそ {{ $store.getters['user/userName'] }} さん</p>
-      <p>現在の作業時間 : {{ workTime }} 秒</p>
-      <p>累積作業時間 : {{ totalWorkTime }} 秒</p>
+      <p>現在の作業時間 {{ workTime }}</p>
+      <p>累積作業時間 {{ totalWorkTime }}</p>
     </v-col>
     <v-col cols="12">
       <h1>{{ remainingTime }}</h1>
@@ -44,14 +44,20 @@ export default {
   computed: {
     remainingTime() {
       const min = zeroPadding(Math.floor(this.remainingSecond / 60), 2)
-      const second = zeroPadding(this.remainingSecond % 60, 2)
-      return `${min} : ${second}`
+      const sec = zeroPadding(this.remainingSecond % 60, 2)
+      return `${min} : ${sec}`
     },
     workTime() {
-      return this.countTime
+      const min = zeroPadding(Math.floor(this.countTime / 60), 2)
+      const sec = zeroPadding(this.countTime % 60, 2)
+      return `${min} : ${sec}`
     },
     totalWorkTime() {
-      return this.$store.getters['user/totalWorkTime'] + this.workTime
+      const totalWorkSeconds =
+        this.$store.getters['user/totalWorkTime'] + this.countTime
+      const min = zeroPadding(Math.floor(totalWorkSeconds / 60), 2)
+      const sec = zeroPadding(totalWorkSeconds % 60, 2)
+      return `${min} : ${sec}`
     },
   },
 

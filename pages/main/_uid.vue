@@ -66,9 +66,29 @@ export default {
 
     // サーバからユーザ情報を取得
     this.fetchUserInfo(uid)
+    // eslint-disable-next-line
+    window.addEventListener('beforeunload', this.confirmSave)
+  },
+  beforeRouteLeave(to, from, next) {
+    if (this.timerType === 'work') {
+      const answer = window.confirm('作業の途中ですが終了しますか？')
+      if (answer) {
+        // 作業時間を更新する処理
+
+        next()
+      } else {
+        next(false)
+      }
+    }
+  },
+  destroyed() {
+    window.removeEventListener('beforeunload', this.confirmSave)
   },
 
   methods: {
+    confirmSave(event) {
+      event.returnValue = ''
+    },
     timerButtonMethod() {
       if (this.isWorkingTimer) {
         // タイマーを一時停止する処理

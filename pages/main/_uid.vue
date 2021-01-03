@@ -49,9 +49,10 @@ export default {
       return `${min} : ${sec}`
     },
     workTime() {
+      const hour = Math.floor(this.countTime / 3600)
       const min = zeroPadding(Math.floor(this.countTime / 60), 2)
       const sec = zeroPadding(this.countTime % 60, 2)
-      return `${min} : ${sec}`
+      return `${hour}時間 ${min}分 ${sec}秒`
     },
     totalWorkTime() {
       const totalWorkSeconds =

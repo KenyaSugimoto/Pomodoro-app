@@ -49,25 +49,28 @@ export default {
       return `${min} : ${sec}`
     },
     workTime() {
+      const hour = Math.floor(this.countTime / 3600)
       const min = zeroPadding(Math.floor(this.countTime / 60), 2)
       const sec = zeroPadding(this.countTime % 60, 2)
-      return `${min} : ${sec}`
+      return `${hour}時間 ${min}分 ${sec}秒`
     },
     totalWorkTime() {
       const totalWorkSeconds =
         this.$store.getters['user/totalWorkTime'] + this.countTime
       const hour = Math.floor(totalWorkSeconds / 3600)
       const min = zeroPadding(Math.floor(totalWorkSeconds / 60), 2)
-      return `${hour}時間 ${min}分`
+      const sec = zeroPadding(totalWorkSeconds % 60, 2)
+      return `${hour}時間 ${min}分 ${sec}秒`
     },
   },
-
-  created() {
+  mounted() {
     // URLからuidを取得
     const uid = this.$route.params.uid
 
     // サーバからユーザ情報を取得
     this.fetchUserInfo(uid)
+
+    window.addEventListener('beforeunload', this.confirmSave)
   },
   beforeRouteLeave(to, from, next) {
     console.log('beforeRouteLeave')
@@ -87,13 +90,21 @@ export default {
     }
   },
   destroyed() {
-    console.log('destoryed')
+    // タイマーの解放
     clearInterval(this.timer)
+
+    window.removeEventListener('beforeunload', this.confirmSave)
   },
 
   methods: {
     confirmSave(event) {
-      event.returnValue = ''
+      // 作業時間の更新
+      this.requestForTotalWorkTimeUpdate()
+
+      // タイマーが動いている場合のみ、確認ダイアログを表示
+      if (this.isWorkingTimer) {
+        event.returnValue = ''
+      }
     },
     timerButtonMethod() {
       if (this.isWorkingTimer) {

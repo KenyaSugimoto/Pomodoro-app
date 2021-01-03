@@ -59,7 +59,8 @@ export default {
         this.$store.getters['user/totalWorkTime'] + this.countTime
       const hour = Math.floor(totalWorkSeconds / 3600)
       const min = zeroPadding(Math.floor(totalWorkSeconds / 60), 2)
-      return `${hour}時間 ${min}分`
+      const sec = zeroPadding(totalWorkSeconds % 60, 2)
+      return `${hour}時間 ${min}分 ${sec}秒`
     },
   },
 
@@ -69,6 +70,9 @@ export default {
 
     // サーバからユーザ情報を取得
     this.fetchUserInfo(uid)
+  },
+  mounted() {
+    window.addEventListener('beforeunload', this.confirmSave)
   },
   beforeRouteLeave(to, from, next) {
     console.log('beforeRouteLeave')
@@ -88,13 +92,18 @@ export default {
     }
   },
   destroyed() {
-    console.log('destoryed')
+    // タイマーの解放
     clearInterval(this.timer)
+
+    window.removeEventListener('beforeunload', this.confirmSave)
   },
 
   methods: {
     confirmSave(event) {
-      event.returnValue = ''
+      // タイマーが動いている場合のみ、確認ダイアログを表示
+      if (this.isWorkingTimer) {
+        event.returnValue = ''
+      }
     },
     timerButtonMethod() {
       if (this.isWorkingTimer) {

@@ -1,5 +1,5 @@
 <template>
   <v-container>
-    <p>Header</p>
+    <p>ポモドーロトレーニング タイマー</p>
   </v-container>
 </template>

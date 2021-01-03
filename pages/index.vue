@@ -22,7 +22,7 @@
 import firebase from 'firebase/app'
 import { auth } from '@/utils/firebase'
 import axios from '@/utils/axios'
-import { gestUid } from '@/utils/utils'
+import { guestUid } from '@/utils/utils'
 
 export default {
   data() {
@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     goMainPage() {
-      this.$router.push({ name: 'main-uid', params: { uid: gestUid } })
+      this.$router.push({ name: 'main-uid', params: { uid: guestUid } })
     },
 
     updateUserInfo(uid, userName, totalWorkTime) {

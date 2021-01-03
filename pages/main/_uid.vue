@@ -56,9 +56,9 @@ export default {
     totalWorkTime() {
       const totalWorkSeconds =
         this.$store.getters['user/totalWorkTime'] + this.countTime
+      const hour = Math.floor(totalWorkSeconds / 3600)
       const min = zeroPadding(Math.floor(totalWorkSeconds / 60), 2)
-      const sec = zeroPadding(totalWorkSeconds % 60, 2)
-      return `${min} : ${sec}`
+      return `${hour}時間 ${min}分`
     },
   },
 
@@ -68,8 +68,6 @@ export default {
 
     // サーバからユーザ情報を取得
     this.fetchUserInfo(uid)
-    // eslint-disable-next-line
-    // window.addEventListener('beforeunload', this.confirmSave)
   },
   beforeRouteLeave(to, from, next) {
     console.log('beforeRouteLeave')
@@ -91,7 +89,6 @@ export default {
   destroyed() {
     console.log('destoryed')
     clearInterval(this.timer)
-    // window.removeEventListener('beforeunload', this.confirmSave)
   },
 
   methods: {
@@ -173,8 +170,6 @@ export default {
           const data = res.data
           // 登録されていないuidでアクセスされた場合、強制的にログインページに戻る
           if (data.error) {
-            // ポップアップ的なやつ出す？
-
             this.$router.push('/')
           }
           const uid = data.uid

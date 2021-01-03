@@ -12,7 +12,7 @@
       ></v-img>
       <p>ようこそ {{ $store.getters['user/userName'] }} さん</p>
       <p>継続作業時間 {{ workTime }}</p>
-      <p>累積作業時間 {{ totalWorkTime }}</p>
+      <p v-if="!isGuest">累積作業時間 {{ totalWorkTime }}</p>
     </v-col>
     <v-col cols="12">
       <h1>{{ remainingTime }}</h1>
@@ -26,13 +26,18 @@
 </template>
 
 <script>
-import { initWorkTime, initBreakTime, zeroPadding } from '@/utils/utils'
+import {
+  initWorkTime,
+  initBreakTime,
+  zeroPadding,
+  guestUid,
+} from '@/utils/utils'
 import axios from '@/utils/axios'
 export default {
   data() {
     return {
       remainingSecond: initWorkTime,
-      displayStatus: 'ポモドーロ',
+      displayStatus: '今日も頑張ろう！',
       isWorkingTimer: false,
       timerType: 'work',
       timerButtonLabel: 'スタート',
@@ -61,6 +66,9 @@ export default {
       const min = zeroPadding(Math.floor(totalWorkSeconds / 60), 2)
       const sec = zeroPadding(totalWorkSeconds % 60, 2)
       return `${hour}時間 ${min}分 ${sec}秒`
+    },
+    isGuest() {
+      return this.$store.getters['user/uid'] === guestUid
     },
   },
   mounted() {
@@ -177,7 +185,6 @@ export default {
       axios
         .post('/user_info', { uid })
         .then((res) => {
-          console.log('user_info', res)
           const data = res.data
           // 登録されていないuidでアクセスされた場合、強制的にログインページに戻る
           if (data.error) {

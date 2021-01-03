@@ -4,8 +4,16 @@
       <h1>Login page</h1>
     </v-col>
     <v-col>
-      <v-btn @click="goMainPage">ゲストログイン</v-btn>
-      <v-btn @click="authGoogle">Google ログイン</v-btn>
+      <v-btn @click="authGoogle">
+        <v-icon small>mdi-google</v-icon>
+        ログイン
+      </v-btn>
+    </v-col>
+    <v-col>
+      <v-btn @click="goMainPage">
+        <v-icon small>mdi-account</v-icon>
+        ゲストログイン
+      </v-btn>
     </v-col>
   </v-row>
 </template>

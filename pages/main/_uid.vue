@@ -63,15 +63,13 @@ export default {
       return `${hour}時間 ${min}分 ${sec}秒`
     },
   },
-
-  created() {
+  mounted() {
     // URLからuidを取得
     const uid = this.$route.params.uid
 
     // サーバからユーザ情報を取得
     this.fetchUserInfo(uid)
-  },
-  mounted() {
+
     window.addEventListener('beforeunload', this.confirmSave)
   },
   beforeRouteLeave(to, from, next) {
@@ -100,6 +98,9 @@ export default {
 
   methods: {
     confirmSave(event) {
+      // 作業時間の更新
+      this.requestForTotalWorkTimeUpdate()
+
       // タイマーが動いている場合のみ、確認ダイアログを表示
       if (this.isWorkingTimer) {
         event.returnValue = ''

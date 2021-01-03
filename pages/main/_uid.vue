@@ -11,7 +11,7 @@
         width="50px"
       ></v-img>
       <p>ようこそ {{ $store.getters['user/userName'] }} さん</p>
-      <p>現在の作業時間 {{ workTime }}</p>
+      <p>継続作業時間 {{ workTime }}</p>
       <p>累積作業時間 {{ totalWorkTime }}</p>
     </v-col>
     <v-col cols="12">
@@ -38,6 +38,7 @@ export default {
       timerButtonLabel: 'スタート',
       timer: null,
       countTime: 0,
+      updatedTotalWorkTime: false,
     }
   },
 
@@ -62,27 +63,35 @@ export default {
   },
 
   created() {
+    // URLからuidを取得
     const uid = this.$route.params.uid
 
     // サーバからユーザ情報を取得
     this.fetchUserInfo(uid)
     // eslint-disable-next-line
-    window.addEventListener('beforeunload', this.confirmSave)
+    // window.addEventListener('beforeunload', this.confirmSave)
   },
   beforeRouteLeave(to, from, next) {
+    console.log('beforeRouteLeave')
+
     if (this.timerType === 'work') {
       const answer = window.confirm('作業の途中ですが終了しますか？')
       if (answer) {
         // 作業時間を更新する処理
-
+        this.requestForTotalWorkTimeUpdate()
+        clearInterval(this.timer)
         next()
       } else {
         next(false)
       }
+    } else {
+      next()
     }
   },
   destroyed() {
-    window.removeEventListener('beforeunload', this.confirmSave)
+    console.log('destoryed')
+    clearInterval(this.timer)
+    // window.removeEventListener('beforeunload', this.confirmSave)
   },
 
   methods: {
@@ -103,7 +112,16 @@ export default {
           if (this.remainingSecond > 0) {
             this.remainingSecond -= 1
             // もし作業中ならカウント
-            if (this.timerType === 'work') this.countTime += 1
+            if (this.timerType === 'work') {
+              this.countTime += 1
+              this.updatedTotalWorkTime = false
+            } else if (
+              this.timerType === 'break' &&
+              !this.updatedTotalWorkTime
+            ) {
+              this.requestForTotalWorkTimeUpdate()
+              this.updatedTotalWorkTime = true
+            }
           } else {
             this.switchTimerType()
           }
@@ -176,6 +194,23 @@ export default {
       this.$store.commit('user/updateUserName', userName)
       this.$store.commit('user/updateTotalWorkTime', totalWorkTime)
       this.$store.commit('user/updatePhotoURL', photoURL)
+    },
+    async requestForTotalWorkTimeUpdate() {
+      const uid = this.$store.getters['user/uid']
+      const totalWorkTime =
+        this.$store.getters['user/totalWorkTime'] + this.countTime
+
+      const sendData = {
+        uid,
+        totalWorkTime,
+      }
+
+      const promise = axios.post('/worked', sendData)
+      const success = await promise
+
+      if (!success) {
+        console.log('作業時間を更新できませんでした。')
+      }
     },
   },
 }

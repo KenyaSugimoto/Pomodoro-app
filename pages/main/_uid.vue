@@ -173,7 +173,7 @@ export default {
     },
     resetPomodoroWork() {
       clearInterval(this.timer)
-      this.displayStatus = 'ポモドーロ'
+      this.displayStatus = '今日も頑張ろう！'
       this.timerButtonLabel = 'スタート'
       this.isWorkingTimer = false
       this.remainingSecond = initWorkTime

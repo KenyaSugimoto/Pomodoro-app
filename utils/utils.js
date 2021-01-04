@@ -1,7 +1,7 @@
 export const initWorkTime = 25 * 60
 export const initBreakTime = 5 * 60
 
-export const gestUid = 'asdfgfdsasdf'
+export const guestUid = 'asdfgfdsasdf'
 
 /**
  * Example

@@ -1,11 +1,19 @@
 <template>
   <v-row>
     <v-col cols="12">
-      <h1>Login page</h1>
+      <h1>ポモドーロトレーニング</h1>
     </v-col>
     <v-col>
-      <v-btn @click="goMainPage">ゲストログイン</v-btn>
-      <v-btn @click="authGoogle">Google ログイン</v-btn>
+      <v-btn @click="authGoogle">
+        <v-icon small>mdi-google</v-icon>
+        ログイン
+      </v-btn>
+    </v-col>
+    <v-col>
+      <v-btn @click="goMainPage">
+        <v-icon small>mdi-account</v-icon>
+        ゲストログイン
+      </v-btn>
     </v-col>
   </v-row>
 </template>
@@ -14,7 +22,7 @@
 import firebase from 'firebase/app'
 import { auth } from '@/utils/firebase'
 import axios from '@/utils/axios'
-import { gestUid } from '@/utils/utils'
+import { guestUid } from '@/utils/utils'
 
 export default {
   data() {
@@ -24,7 +32,7 @@ export default {
   },
   methods: {
     goMainPage() {
-      this.$router.push({ name: 'main-uid', params: { uid: gestUid } })
+      this.$router.push({ name: 'main-uid', params: { uid: guestUid } })
     },
 
     updateUserInfo(uid, userName, totalWorkTime) {

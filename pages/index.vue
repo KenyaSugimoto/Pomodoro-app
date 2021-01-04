@@ -1,8 +1,5 @@
 <template>
   <v-row>
-    <v-col cols="12">
-      <h1>ポモドーロトレーニング</h1>
-    </v-col>
     <v-col>
       <v-btn @click="authGoogle">
         <v-icon small>mdi-google</v-icon>

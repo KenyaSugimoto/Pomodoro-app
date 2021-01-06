@@ -55,7 +55,8 @@ export default {
     },
     workTime() {
       const hour = Math.floor(this.countTime / 3600)
-      const min = zeroPadding(Math.floor(this.countTime / 60), 2)
+      const minTemp = (this.countTime - hour * 3600) / 60
+      const min = zeroPadding(Math.floor(minTemp), 2)
       const sec = zeroPadding(this.countTime % 60, 2)
       return `${hour}時間 ${min}分 ${sec}秒`
     },
@@ -63,7 +64,8 @@ export default {
       const totalWorkSeconds =
         this.$store.getters['user/totalWorkTime'] + this.countTime
       const hour = Math.floor(totalWorkSeconds / 3600)
-      const min = zeroPadding(Math.floor(totalWorkSeconds / 60), 2)
+      const minTemp = (totalWorkSeconds - hour * 3600) / 60
+      const min = zeroPadding(Math.floor(minTemp), 2)
       const sec = zeroPadding(totalWorkSeconds % 60, 2)
       return `${hour}時間 ${min}分 ${sec}秒`
     },

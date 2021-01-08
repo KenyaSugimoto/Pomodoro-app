@@ -19,7 +19,7 @@
 import firebase from 'firebase/app'
 import { auth } from '@/utils/firebase'
 import axios from '@/utils/axios'
-import { guestUid } from '@/utils/utils'
+import { guestUid } from '@/utils/constants'
 
 export default {
   data() {

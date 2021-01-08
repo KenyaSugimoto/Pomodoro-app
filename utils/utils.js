@@ -1,8 +1,3 @@
-export const initWorkTime = 25 * 60
-export const initBreakTime = 5 * 60
-
-export const guestUid = 'asdfgfdsasdf'
-
 /**
  * Example
  * ```

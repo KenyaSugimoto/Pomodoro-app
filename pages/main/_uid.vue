@@ -26,13 +26,16 @@
 </template>
 
 <script>
+import { zeroPadding } from '@/utils/utils'
 import {
-  initWorkTime,
-  initBreakTime,
-  zeroPadding,
   guestUid,
-} from '@/utils/utils'
+  initBreakTime,
+  initWorkTime,
+  pushNotifyConf,
+} from '@/utils/constants'
 import axios from '@/utils/axios'
+import Push from 'push.js'
+
 export default {
   data() {
     return {
@@ -167,10 +170,14 @@ export default {
         this.timerType = 'break'
         this.changeStatus('break')
         this.remainingSecond = initBreakTime
+        // プッシュ通知
+        Push.create(pushNotifyConf.breakTitle, pushNotifyConf.breakOptions)
       } else {
         this.timerType = 'work'
         this.changeStatus('work')
         this.remainingSecond = initWorkTime
+        // プッシュ通知
+        Push.create(pushNotifyConf.workTitle, pushNotifyConf.workOptions)
       }
     },
     resetPomodoroWork() {

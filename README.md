@@ -1,20 +1,15 @@
-# Pomodoro-app
+# ポモドーロテクニックアプリ
 
-## Build Setup
+## 概要
+- ポモドーロテクニックを実践しながら作業時間を蓄積していけるタイマーアプリ
 
-```bash
-# install dependencies
-$ npm install
+![タイマー機能](https://user-images.githubusercontent.com/45161125/109158769-2a758f00-77b7-11eb-87d7-3bd8f7245210.gif)
+## ポモドーロテクニックとは
+> ポモドーロ・テクニック（英: Pomodoro Technique、ポモドーロ法）とは、時間管理術のひとつ。 1980年代にイタリア人のフランチェスコ・シリロによって考案された。
+> このテクニックではタイマーを使用し、一般的には25分の作業と短い休息で作業時間と休息時間を分割する。 1セットを「ポモドーロ」と呼ぶ。これは、イタリア語で「トマト」を意味する言葉で、シリロが大学生時代にトマト型のキッチンタイマーを使用していたことにちなむ。 (参照：[ポモドーロテクニック Wikipedia](https://ja.wikipedia.org/wiki/%E3%83%9D%E3%83%A2%E3%83%89%E3%83%BC%E3%83%AD%E3%83%BB%E3%83%86%E3%82%AF%E3%83%8B%E3%83%83%E3%82%AF))
 
-# serve with hot reload at localhost:3000
-$ npm run dev
-
-# build for production and launch server
-$ npm run build
-$ npm run start
-
-# generate static project
-$ npm run generate
-```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+## 主な機能
+- タイマー機能
+- ログイン機能（Googleアカウント認証）
+- ゲストログイン機能
+- 通知機能（プッシュ通知）
